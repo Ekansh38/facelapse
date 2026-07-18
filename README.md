@@ -17,9 +17,11 @@ more comfortable showing my face 😢. (trust me its really good)
 
 Run these once:
 
-```bash python3 -m venv venv source venv/bin/activate pip3 install -r requirements.txt curl -o
-face_landmarker.task \
-https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task
+```bash 
+python3 -m venv venv 
+source venv/bin/activate 
+pip3 install -r requirements.txt 
+curl -o face_landmarker.task \ https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task
 ```
 
 Every new terminal, activate the venv again:
