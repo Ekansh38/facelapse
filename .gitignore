@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+
+face_images/
+aligned/
+output*.mp4
+face_landmarker.task
