@@ -21,6 +21,7 @@ LEFT_EYE_CORNERS = (362, 263)
 RIGHT_EYE_CORNERS = (33, 133)
 
 DEFAULT_MODEL = Path(__file__).with_name("face_landmarker.task")
+DEFAULT_PER_IMAGE = 0.15  # used when neither --length nor --per-image is given
 
 # get the date and time for chronological order
 _EXIF_TAGS = {v: k for k, v in ExifTags.TAGS.items()}
@@ -137,12 +138,13 @@ def main() -> int:
     ap.add_argument("--output", default="output.mp4", help="output video path")
     ap.add_argument("--width", type=int, default=1920, help="output width in pixels")
     ap.add_argument("--height", type=int, default=1080, help="output height in pixels")
-    timing = ap.add_mutually_exclusive_group(required=True)
+    timing = ap.add_mutually_exclusive_group()
     timing.add_argument("--length", type=float,
                         help="target total video length in seconds "
                              "(per-image time = length / number of images)")
     timing.add_argument("--per-image", type=float,
-                        help="seconds each image should stay on screen")
+                        help=f"seconds each image should stay on screen "
+                             f"(default: {DEFAULT_PER_IMAGE})")
     ap.add_argument("--eye-y", type=float, default=0.45,
                     help="target eye y position as fraction of frame height")
     ap.add_argument("--eye-dist", type=float, default=0.12,
@@ -225,7 +227,12 @@ def main() -> int:
     layers = (caption_layers(dates, args.fade_frames)
               if args.caption else [[] for _ in aligned])
 
-    per_image = (args.length / len(aligned)) if args.length else args.per_image
+    if args.length:
+        per_image = args.length / len(aligned)
+    elif args.per_image:
+        per_image = args.per_image
+    else:
+        per_image = DEFAULT_PER_IMAGE
     if per_image <= 0:
         print(f"per-image duration must be positive (got {per_image:.4f}s)",
               file=sys.stderr)

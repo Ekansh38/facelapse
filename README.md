@@ -30,8 +30,21 @@ Every new terminal, activate the venv again:
 
 ## Use
 
-Put your photos in a folder called `face_images` next to `stitch.py`. You must pick how long the
-video should be, using one of two flags:
+Put your photos in a folder called `face_images` next to `stitch.py`.
+
+If your photos are HEIC (e.g. straight from an iPhone), convert them first:
+
+```bash python heic_to_jpeg.py ```
+
+That drops a `.jpg` next to each `.heic` in `face_images`, preserving EXIF so
+capture dates still work. Add `--delete-originals` to remove the HEICs after.
+
+Then run `stitch.py`. With no flags it uses a sensible default of 0.15s per
+photo:
+
+```bash python stitch.py ```
+
+You can override the timing with one of:
 
 - `--length SECONDS`: total video length. Each photo gets `length / number of photos` on screen.
 - `--per-image SECONDS`: how long each photo stays on screen.
@@ -50,8 +63,8 @@ That writes `output.mp4` at 1920x1080.
 
 | flag | default | what it does |
 |---|---|---|
-| `--length SECONDS` | required (one of these two) | total video length. Splits it evenly across your photos |
-| `--per-image SECONDS` | required (one of these two) | seconds each photo stays on screen |
+| `--length SECONDS` | (optional) | total video length. Splits it evenly across your photos |
+| `--per-image SECONDS` | `0.15` when neither is set | seconds each photo stays on screen |
 | `--input FOLDER` | `FACE IMAGES` | folder to read photos from |
 | `--output FILE` | `output.mp4` | video file to write |
 | `--width N` | `1920` | output width in pixels |
